@@ -36,9 +36,3 @@ Cada filósofo conoce su entorno inmediato:
 * **pthread_mutex_t** ***left_fork**: Puntero al tenedor de su izquierda.
 * **pthread_mutex_t** ***right_fork**: Puntero al tenedor de su derecha.
 * **t_data** ***data**: Referencia a los parámetros globales.
-
-
-Bash
-./philo 5 800 200 200
-
-(5 filósofos, mueren en 800ms si no comen, tardan 200ms en comer y 200ms en dormir).
