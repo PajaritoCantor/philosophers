@@ -21,40 +21,22 @@ Para resolver la simulación, implementamos un sistema multihilo donde cada fil�
 ## 📊 Diseño de Datos (No-Global Architecture)
 Para cumplir con la restricción de zero global variables, hemos diseñado una jerarquía de estructuras que se pasan por referencia a cada hilo:
 
-* **Estructura Global (t_data)**
+
+### Estructura Global (t_data)
 Contiene los parámetros de entrada y herramientas de sincronización general:
-int nb_philo: Número de filósofos y tenedores.
-size_t t_die, t_eat, t_sleep: Tiempos críticos en ms.
+* **int nb_philo:** Número de filósofos y tenedores.
+* **size_t t_die**, **t_eat**, **t_sleep:** Tiempos críticos en ms.
+* **pthread_mutex_t write_lock**: Mutex para que los logs no se superpongan.
+* **pthread_mutex_t** ***forks**: Array de mutex que representan los tenedores físicos.
 
-
-pthread_mutex_t write_lock: Mutex para que los logs no se superpongan.
-
-
-pthread_mutex_t *forks: Array de mutex que representan los tenedores físicos.
-+1
-
-Estructura de Filósofo (t_philo)
+### Estructura de Filósofo (t_philo)
 Cada filósofo conoce su entorno inmediato:
+* **int id:** Identificador único (1 a N).
+* **pthread_t thread**: El hilo que ejecuta la rutina.
+* **pthread_mutex_t** ***left_fork**: Puntero al tenedor de su izquierda.
+* **pthread_mutex_t** ***right_fork**: Puntero al tenedor de su derecha.
+* **t_data** ***data**: Referencia a los parámetros globales.
 
-
-int id: Identificador único (1 a N).
-
-pthread_t thread: El hilo que ejecuta la rutina.
-
-
-pthread_mutex_t *left_fork: Puntero al tenedor de su izquierda.
-
-
-pthread_mutex_t *right_fork: Puntero al tenedor de su derecha.
-
-t_data *data: Referencia a los parámetros globales.
-
-🛠️ Cómo ejecutar
-Clona el repositorio.
-
-Compila con make.
-
-Ejecuta con los parámetros deseados:
 
 Bash
 ./philo 5 800 200 200
