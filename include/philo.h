@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/01/19 16:19:08 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/09 16:04:20 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/time.h>
 # include <limits.h>
 
-// Colores para una terminal amigable
 # define RST    "\033[0m"
 # define RED    "\033[1;31m"
 # define G      "\033[1;32m"
@@ -53,7 +52,7 @@ typedef struct s_philo
 	t_table		*table;
 }				t_philo;
 
-struct s_table
+typedef struct s_table
 {
 	long	philo_nbr;
 	long	time_to_die;
@@ -66,7 +65,7 @@ struct s_table
 	t_mtx	write_lock;
 	t_fork	*forks;
 	t_philo	*philos;
-};
+}			t_table;
 
 // Prototipos
 void	error_exit(const char *error);
