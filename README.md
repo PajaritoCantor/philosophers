@@ -29,6 +29,20 @@ Contiene los parámetros de entrada y herramientas de sincronización general:
 * **pthread_mutex_t write_lock**: Mutex para que los logs no se superpongan.
 * **pthread_mutex_t** ***forks**: Array de mutex que representan los tenedores físicos.
 
+* **Especificaciones de los Argumentos**
+
+Para ejecutar el programa **./philo**, se deben proporcionar los siguientes parámetros, asegurando que todos sean enteros positivos:
+
+* **number_of_philosophers:** Define la cantidad total de filósofos sentados a la mesa y, por consiguiente, el número de hilos independientes y mutex (tenedores) que el programa debe orquestar simultáneamente.
+
+* **time_to_die (ms):** Establece el umbral de supervivencia de cada filósofo, representando el tiempo máximo permitido entre el inicio de una comida y la siguiente antes de que el hilo monitor registre una defunción y detenga la simulación.
+
+* **time_to_eat (ms):** Determina el periodo de ocupación de recursos, durante el cual un filósofo mantiene bloqueados los mutex de sus dos tenedores adyacentes para completar su ciclo de alimentación.
+
+* **time_to_sleep (ms):** Especifica la duración del estado de reposo obligatorio que el filósofo debe cumplir inmediatamente después de liberar sus tenedores, antes de transicionar de nuevo al estado de pensamiento.
+
+* **number_of_times_each_philosopher_must_eat (Opcional):** Actúa como una condición de salida por éxito, donde la simulación finaliza limpiamente si todos los hilos alcanzan este contador de comidas; de lo contrario, el programa solo termina ante la muerte de un filósofo.
+
 ### Estructura de Filósofo (t_philo)
 Cada filósofo conoce su entorno inmediato:
 * **int id:** Identificador único (1 a N).
