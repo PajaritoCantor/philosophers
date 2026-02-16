@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   safe_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:47 by jurodrig         ###   ########.fr       */
+/*   Created: 2026/02/16 12:08:12 by jurodrig          #+#    #+#             */
+/*   Updated: 2026/02/16 12:09:11 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_exit(const char *error)
-{
-	printf(RED"%s\n"RST, error);
-	exit(EXIT_FAILURE);
-}
+/*Containing wrapper functions
+* with embedded controls on return
+*/
+

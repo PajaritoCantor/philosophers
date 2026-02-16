@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:47 by jurodrig         ###   ########.fr       */
+/*   Created: 2026/02/16 11:39:52 by jurodrig          #+#    #+#             */
+/*   Updated: 2026/02/16 12:07:32 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_exit(const char *error)
+void	data_init(t_table *table)
 {
-	printf(RED"%s\n"RST, error);
-	exit(EXIT_FAILURE);
+	table->end_simulation = false;
+	table->philos
 }
