@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/16 11:38:45 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/17 01:01:29 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@
 # define M      "\033[1;35m"
 # define C      "\033[1;36m"
 # define W      "\033[1;37m"
+
+typedef enum e_opcode
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH,
+}			t_opcode;
+
 
 typedef pthread_mutex_t	t_mtx;
 typedef struct s_table	t_table;
