@@ -20,6 +20,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <limits.h>
+# include <err.h>
 
 # define RST    "\033[0m"
 # define RED    "\033[1;31m"
@@ -79,8 +80,17 @@ typedef struct s_table
 	t_philo	*philos;
 }			t_table;
 
-// Prototipos
+// src
+
+// ** utils**
 void	error_exit(const char *error);
+
+// *** parsing ***
 void	parse_input(t_table *table, char **av);
+
+// *** safe functions ***
+void	*safe_malloc(size_t bytes);
+void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_opcode opcode);
+void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
 
 #endif
