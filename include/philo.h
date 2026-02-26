@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/17 01:01:29 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/25 22:44:35 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <err.h>
+# include <sys/time.h>
 
 # define RST    "\033[0m"
 # define RED    "\033[1;31m"
@@ -30,6 +31,16 @@
 # define M      "\033[1;35m"
 # define C      "\033[1;36m"
 # define W      "\033[1;37m"
+
+typedef enum e_status
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	TAKE_FIRST_FORK,
+	TAKE_SECOND_FORK,
+	DIED,
+}			t_philo_status;
 
 typedef enum e_opcode
 {
@@ -41,6 +52,13 @@ typedef enum e_opcode
 	JOIN,
 	DETACH,
 }			t_opcode;
+
+enum	e_time_code
+{
+	SECOND,
+	MILLISECOND,
+	MICROSECOND,
+}		t_time_code;
 
 
 typedef pthread_mutex_t	t_mtx;
@@ -58,10 +76,9 @@ typedef struct s_philo
 	long		meals_counter;
 	bool		full;
 	long		last_meal_time;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
+	t_fork		*first_fork;
+	t_fork		*second_fork;
 	pthread_t	thread_id;
-	t_mtx		philo_lock;
 	t_table		*table;
 }				t_philo;
 
@@ -71,19 +88,22 @@ typedef struct s_table
 	long	time_to_die;
 	long	time_to_eat;
 	long	time_to_sleep;
-	long	nbr_limit_meals;
+	long	nbr_limit_meals; // [5] | FLAG if -1
 	long	start_simulation;
-	bool	end_simulation;
-	t_mtx	table_lock;
-	t_mtx	write_lock;
-	t_fork	*forks;
-	t_philo	*philos;
+	bool	end_simulation; // a philo dies or all philos full
+	bool	all_threads_ready; // syncro philos
+	t_mtx	table_mutex; // avoid races while reading from table
+	t_mtx	write_mutex;
+	t_fork	*forks; // array forks
+	t_philo	*philos; // array philos
 }			t_table;
 
 // src
 
 // ** utils**
 void	error_exit(const char *error);
+long	gettime(t_time_code time_code);
+void	precise_usleep(long usec, t_table *table);
 
 // *** parsing ***
 void	parse_input(t_table *table, char **av);
@@ -92,5 +112,12 @@ void	parse_input(t_table *table, char **av);
 void	*safe_malloc(size_t bytes);
 void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_opcode opcode);
 void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+
+//*** setters and getters ***
+void	set_bool(t_mtx *mutex, bool *dest, bool value);
+bool	get_bool(t_mtx *mutex, bool *value);
+long	get_long(t_mtx *mutex, long *value);
+void	set_long(t_mtx *mutex, long *dest, long *value);
+bool	simulation_finished(t_table *table);
 
 #endif
