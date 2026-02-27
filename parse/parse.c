@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:34:29 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/16 11:38:46 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/27 19:44:38 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static inline bool	is_space(char c)
 
 static const char	*valid_input(const char *str)
 {
-	int	len;
+	int			len;
 	const char	*number;
-	
+
 	len = 0;
 	while (is_space(*str))
 		++str;
@@ -43,6 +43,7 @@ static const char	*valid_input(const char *str)
 		error_exit("The value is too big, INT_MAX is the limit");
 	return (number);
 }
+
 static long	ft_atol(const char *str)
 {
 	long	num;
@@ -56,7 +57,7 @@ static long	ft_atol(const char *str)
 	return (num);
 }
 
-void    parse_input(t_table *table, char **av)
+void	parse_input(t_table *table, char **av)
 {
 	table->philo_nbr = ft_atol(av[1]);
 	table->time_to_die = ft_atol(av[2]);

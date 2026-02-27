@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/25 22:32:27 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/27 21:01:34 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long	gettime(t_time_code time_code)
 {
-	struct	timeval	tv;
+	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
 		error_exit("Gettimeofday failed");
@@ -28,6 +28,7 @@ long	gettime(t_time_code time_code)
 		error_exit("wrong input to gettime!");
 	return (1337);
 }
+
 void	precise_usleep(long usec, t_table *table)
 {
 	long	start;

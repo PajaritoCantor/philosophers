@@ -6,25 +6,26 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 11:59:44 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/16 11:38:48 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/27 19:40:57 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main (int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_table	table;
-    if (ac == 5 || ac == 6)
-    {
+
+	if (ac == 5 || ac == 6)
+	{
 		parse_input(&table, av);
 		data_init(&table);
 		dinner_start(&table);
 		clean(&table);
-    }
-    else
-    {
+	}
+	else
+	{
 		error_exit("Wrong input:\n"
 			G"Correct it ./philo 5 800 200 200 [5]"RST);
-    }
+	}
 }

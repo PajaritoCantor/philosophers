@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/25 22:44:35 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/27 21:22:38 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define C      "\033[1;36m"
 # define W      "\033[1;37m"
 
+# define DEBUG_MODE
+
 typedef enum e_status
 {
 	EATING,
@@ -53,13 +55,12 @@ typedef enum e_opcode
 	DETACH,
 }			t_opcode;
 
-enum	e_time_code
+typedef enum e_time_code
 {
 	SECOND,
 	MILLISECOND,
 	MICROSECOND,
 }		t_time_code;
-
 
 typedef pthread_mutex_t	t_mtx;
 typedef struct s_table	t_table;
@@ -75,10 +76,11 @@ typedef struct s_philo
 	int			id;
 	long		meals_counter;
 	bool		full;
-	long		last_meal_time;
+	long		last_meal_time; // time passed from last meal
 	t_fork		*first_fork;
 	t_fork		*second_fork;
 	pthread_t	thread_id;
+	t_mtx		philo_mutex; // useful for races the monitor
 	t_table		*table;
 }				t_philo;
 
@@ -110,8 +112,11 @@ void	parse_input(t_table *table, char **av);
 
 // *** safe functions ***
 void	*safe_malloc(size_t bytes);
-void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_opcode opcode);
+void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
+			void *data, t_opcode opcode);
 void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
+			void *data, t_opcode opcode);
 
 //*** setters and getters ***
 void	set_bool(t_mtx *mutex, bool *dest, bool value);
@@ -119,5 +124,7 @@ bool	get_bool(t_mtx *mutex, bool *value);
 long	get_long(t_mtx *mutex, long *value);
 void	set_long(t_mtx *mutex, long *dest, long *value);
 bool	simulation_finished(t_table *table);
+
+void	write_status(t_philo_status status, t_philo *philo, bool debug);
 
 #endif

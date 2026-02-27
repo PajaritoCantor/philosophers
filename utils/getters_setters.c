@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:18:07 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/25 20:32:30 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/27 19:58:05 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 * to avoid writing LOCK UNLOCK everywhere  
 */
 void	set_bool(t_mtx *mutex, bool *dest, bool value)
-{	
+{
 	safe_mutex_handle(mutex, LOCK);
-	*dest = value
+	*dest = value;
 	safe_mutex_handle(mutex, UNLOCK);
 }
 
