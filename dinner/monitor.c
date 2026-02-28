@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 21:43:12 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 22:01:55 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 23:15:47 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,21 @@
 static bool	philo_died(t_philo *philo)
 {
 	long	elapsed;
-	long	t_to_die;
+	long	last_meal;
 
 	if (get_bool(&philo->philo_mutex, &philo->full))
 		return (false);
-	elapsed = gettime(MILLISECOND) - get_long(&philo->philo_mutex,
-			&philo->last_meal_time);
-	t_to_die = philo->table->time_to_die;
-	if (elapsed >= t_to_die)
+	last_meal = get_long(&philo->philo_mutex, &philo->last_meal_time);
+	elapsed = gettime(MILLISECOND) - last_meal;
+	if (elapsed > philo->table->time_to_die)
 		return (true);
 	return (false);
 }
 
 void	*monitor_dinner(void *data)
 {
-	int		i;
 	t_table	*table;
+	int		i;
 
 	table = (t_table *)data;
 	while (!all_threads_running(&table->table_mutex,
@@ -48,7 +47,7 @@ void	*monitor_dinner(void *data)
 				return (NULL);
 			}
 		}
-		usleep(1000);
+		usleep(200);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:38:05 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 19:22:41 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 23:05:07 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	de_synchronize_philos(t_philo *philo)
 	}
 	else
 	{
-		if (philo->id % 2)
-			thinking(philo, true);
+		if (philo->id % 2 == 0)
+			precise_usleep(philo->table->time_to_eat * 500, philo->table);
 	}
 }

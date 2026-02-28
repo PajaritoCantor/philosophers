@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 22:02:35 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 23:27:03 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,11 @@ long	gettime(t_time_code time_code)
 
 	if (gettimeofday(&tv, NULL))
 		error_exit("Gettimeofday failed");
-	if (SECOND == time_code)
-		return (tv.tv_sec + (tv.tv_usec / 1000000));
-	else if (MILLISECOND == time_code)
+	if (MILLISECOND == time_code)
 		return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 	else if (MICROSECOND == time_code)
 		return ((tv.tv_sec * 1000000) + tv.tv_usec);
-	else
-		error_exit("Wrong input to gettime!");
-	return (1337);
+	return (0);
 }
 
 void	precise_usleep(long usec, t_table *table)
@@ -38,7 +34,7 @@ void	precise_usleep(long usec, t_table *table)
 	{
 		if (simulation_finished(table))
 			break ;
-		usleep(500);
+		usleep(100);
 	}
 }
 
@@ -49,11 +45,11 @@ void	clean(t_table *table)
 	i = -1;
 	while (++i < table->philo_nbr)
 	{
-		safe_mutex_handle(&table->philos[i].philo_mutex, DESTROY);
-		safe_mutex_handle(&table->forks[i].s_fork, DESTROY);
+		pthread_mutex_destroy(&table->forks[i].s_fork);
+		pthread_mutex_destroy(&table->philos[i].philo_mutex);
 	}
-	safe_mutex_handle(&table->write_mutex, DESTROY);
-	safe_mutex_handle(&table->table_mutex, DESTROY);
+	pthread_mutex_destroy(&table->write_mutex);
+	pthread_mutex_destroy(&table->table_mutex);
 	free(table->forks);
 	free(table->philos);
 }

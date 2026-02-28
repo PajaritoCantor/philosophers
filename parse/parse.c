@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:34:29 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 19:08:35 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 22:48:44 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ static const char	*valid_input(const char *str)
 		++len;
 		++str;
 	}
+	while (is_space(*str))
+		++str;
+	if (*str != '\0')
+		error_exit("Input contains invalid trailing characters");
 	if (len > 10)
 		error_exit("The value is too big, INT_MAX is the limit");
 	return (number);
