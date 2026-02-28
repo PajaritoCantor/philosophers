@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 19:26:23 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:28:49 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,13 @@ long	gettime(t_time_code time_code)
 void	precise_usleep(long usec, t_table *table)
 {
 	long	start;
-	long	elapsed;
-	long	rem;
 
 	start = gettime(MICROSECOND);
 	while (gettime(MICROSECOND) - start < usec)
 	{
 		if (simulation_finished(table))
 			break ;
-		elapsed = gettime(MICROSECOND) - start;
-		rem = usec - elapsed;
-		if (rem > 1000)
-			usleep(rem / 2);
-		else
-			while (gettime(MICROSECOND) - start < usec)
-				;
+		usleep(500);
 	}
 }
 

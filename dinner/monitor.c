@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 21:43:12 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 19:00:44 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:31:56 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	*monitor_dinner(void *data)
 	while (!all_threads_running(&table->table_mutex,
 			&table->threads_running_nbr, table->philo_nbr))
 		usleep(100);
-	precise_usleep(10, table);
 	while (!simulation_finished(table))
 	{
 		i = -1;
@@ -50,11 +49,11 @@ void	*monitor_dinner(void *data)
 			if (philo_died(table->philos + i))
 			{
 				set_bool(&table->table_mutex, &table->end_simulation, true);
-				write_status(DIED, table->philos + i, false);
-				break ;
+				write_status(DIED, table->philos + i);
+				return (NULL);
 			}
 		}
-		usleep(500);
+		usleep(200);
 	}
 	return (NULL);
 }
