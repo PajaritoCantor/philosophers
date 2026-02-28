@@ -1,6 +1,6 @@
 # 🍝 Philosophers - 42 Project 🍝
 
-This project has been created as part of the 42 curriculum by [tu_login].
+This project has been created as part of the 42 curriculum by @jurodrig.
 ## 📝 Description
 
 This project is a simulation based on the classic Dining Philosophers problem. It explores the fundamentals of concurrent programming, specifically how to create and manage threads, and how to use mutexes to protect shared resources and avoid data races.
