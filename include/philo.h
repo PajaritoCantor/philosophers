@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/27 21:22:38 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 12:16:32 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <limits.h>
-# include <err.h>
+# include <errno.h>
 # include <sys/time.h>
 
 # define RST    "\033[0m"
@@ -32,7 +32,7 @@
 # define C      "\033[1;36m"
 # define W      "\033[1;37m"
 
-# define DEBUG_MODE
+# define DEBUG_MODE 0
 
 typedef enum e_status
 {
@@ -94,6 +94,7 @@ typedef struct s_table
 	long	start_simulation;
 	bool	end_simulation; // a philo dies or all philos full
 	bool	all_threads_ready; // syncro philos
+	long	threads_running_nbr;
 	t_mtx	table_mutex; // avoid races while reading from table
 	t_mtx	write_mutex;
 	t_fork	*forks; // array forks
@@ -111,20 +112,16 @@ void	precise_usleep(long usec, t_table *table);
 void	parse_input(t_table *table, char **av);
 
 // *** safe functions ***
-void	*safe_malloc(size_t bytes);
-void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
-			void *data, t_opcode opcode);
-void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
-void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
-			void *data, t_opcode opcode);
+void    *safe_malloc(size_t bytes);
+void    safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+void    safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
+            void *data, t_opcode opcode);
 
 //*** setters and getters ***
-void	set_bool(t_mtx *mutex, bool *dest, bool value);
-bool	get_bool(t_mtx *mutex, bool *value);
-long	get_long(t_mtx *mutex, long *value);
-void	set_long(t_mtx *mutex, long *dest, long *value);
-bool	simulation_finished(t_table *table);
-
-void	write_status(t_philo_status status, t_philo *philo, bool debug);
+void    set_bool(t_mtx *mutex, bool *dest, bool value);
+bool    get_bool(t_mtx *mutex, bool *value);
+void    set_long(t_mtx *mutex, long *dest, long value); // Cambiado long *value a long value
+long    get_long(t_mtx *mutex, long *value);
+bool    simulation_finished(t_table *table);
 
 #endif

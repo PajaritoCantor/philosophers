@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:04:18 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/27 22:28:09 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 12:12:50 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static void	thinking(t_philo *philo)
  */
 static void	eat(t_philo *philo)
 {
-	safe_mutex_handle(&philo->first_fork->fork, LOCK);
+	safe_mutex_handle(&philo->first_fork->s_fork, LOCK);
 	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
-	safe_mutex_handle(&philo->second_fork->fork, LOCK);
+	safe_mutex_handle(&philo->second_fork->s_fork, LOCK);
 	write_status(TAKE_SECOND_FORK, philo, DEBUG_MODE);
 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
 	safe_mutex_handle(&philo->philo_mutex, LOCK);
@@ -42,8 +42,8 @@ static void	eat(t_philo *philo)
 	if (philo->table->nbr_limit_meals > 0
 		&& philo->meals_counter == philo->table->nbr_limit_meals)
 		set_bool(&philo->philo_mutex, &philo->full, true);
-	safe_mutex_handle(&philo->first_fork->fork, UNLOCK);
-	safe_mutex_handle(&philo->second_fork->fork, UNLOCK);
+	safe_mutex_handle(&philo->first_fork->s_fork, UNLOCK);
+	safe_mutex_handle(&philo->second_fork->s_fork, UNLOCK);
 }
 
 /*

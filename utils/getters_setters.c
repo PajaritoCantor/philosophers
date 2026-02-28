@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:18:07 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/27 19:58:05 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 12:11:55 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ bool	get_bool(t_mtx *mutex, bool *value)
 	return (ret);
 }
 
+void	set_long(t_mtx *mutex, long *dest, long value)
+{
+	safe_mutex_handle(mutex, LOCK);
+	*dest = value;
+	safe_mutex_handle(mutex, UNLOCK);
+}
+
 long	get_long(t_mtx *mutex, long *value)
 {
 	long	ret;
@@ -44,17 +51,7 @@ long	get_long(t_mtx *mutex, long *value)
 	return (ret);
 }
 
-void	set_long(t_mtx *mutex, long *dest, long *value)
-{
-	long	ret;
-
-	safe_mutex_handle(mutex, LOCK);
-	ret = value;
-	safe_mutex_handle(mutex, UNLOCK);
-	return (ret);
-}
-
 bool	simulation_finished(t_table *table)
 {
-	return (get_bool(table->table_mutex, &table->end_simulation));
+	return (get_bool(&table->table_mutex, &table->end_simulation));
 }

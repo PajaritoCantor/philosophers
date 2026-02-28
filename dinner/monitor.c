@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 21:43:12 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/27 22:13:19 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 12:12:01 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,26 @@ static bool	philo_died(t_philo *philo)
 
 void	*monitor_dinner(void *data)
 {
+	int		i;
 	t_table	*table;
 
 	table = (t_table *)data;
 	while (!all_threads_running(&table->table_mutex,
-			&table->all_threads_running_nbr, table->philo_nbr))
-		;
-	while (simulation_finished(table))
+			&table->threads_running_nbr, table->philo_nbr))
+		usleep(100);
+	while (!simulation_finished(table))
 	{
 		i = -1;
-		while (++i < table->philo_nbr)
+		while (++i < table->philo_nbr && !simulation_finished(table))
 		{
 			if (philo_died(table->philos + i))
 			{
 				set_bool(&table->table_mutex, &table->end_simulation, true);
 				write_status(DIED, table->philos + i, DEBUG_MODE);
+				break ;
 			}
 		}
+		usleep(500);
 	}
 	return (NULL);
 }
