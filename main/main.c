@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 11:59:44 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/27 19:40:57 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:03:31 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	main(int ac, char **av)
 	}
 	else
 	{
-		error_exit("Wrong input:\n"
-			G"Correct it ./philo 5 800 200 200 [5]"RST);
+		write(2, "Error: Wrong input\n", 19);
+		return (1);
 	}
+	return (0);
 }

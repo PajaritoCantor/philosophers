@@ -6,18 +6,18 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:34:29 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/27 19:44:38 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:08:35 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static inline bool	is_digit(char c)
+static bool	is_digit(char c)
 {
-	return (c >= 48 && c <= 57);
+	return (c >= '0' && c <= '9');
 }
 
-static inline bool	is_space(char c)
+static bool	is_space(char c)
 {
 	return ((c >= 9 && c <= 13) || 32 == c);
 }
@@ -30,15 +30,18 @@ static const char	*valid_input(const char *str)
 	len = 0;
 	while (is_space(*str))
 		++str;
-	if (*str == 43)
+	if (*str == '+')
 		++str;
-	else if (*str == 45)
-		error_exit("Feed me only positive valuse u suck!");
+	else if (*str == '-')
+		error_exit("Feed me only positive values");
 	if (!is_digit(*str))
 		error_exit("The input is not a correct digit");
 	number = str;
-	while (is_digit(*str++))
+	while (is_digit(*str))
+	{
 		++len;
+		++str;
+	}
 	if (len > 10)
 		error_exit("The value is too big, INT_MAX is the limit");
 	return (number);
@@ -50,8 +53,8 @@ static long	ft_atol(const char *str)
 
 	num = 0;
 	str = valid_input(str);
-	while (is_digt(*str))
-		num = (num * 10) + (*str++ - 48);
+	while (is_digit(*str))
+		num = (num * 10) + (*str++ - '0');
 	if (num > INT_MAX)
 		error_exit("The value is too big, INT_MAX is the limit!");
 	return (num);
@@ -63,10 +66,12 @@ void	parse_input(t_table *table, char **av)
 	table->time_to_die = ft_atol(av[2]);
 	table->time_to_eat = ft_atol(av[3]);
 	table->time_to_sleep = ft_atol(av[4]);
+	if (table->philo_nbr > 200)
+		error_exit("Max 200 philosophers allowed");
 	if (table->time_to_die < 60
 		|| table->time_to_eat < 60
 		|| table->time_to_sleep < 60)
-		error_exit("use timestamps major than 60ms");
+		error_exit("Use timestamps major than 60ms");
 	if (av[5])
 		table->nbr_limit_meals = ft_atol(av[5]);
 	else

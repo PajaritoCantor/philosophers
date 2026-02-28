@@ -6,9 +6,11 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 16:32:30 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:26:23 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 #include "philo.h"
 
@@ -19,13 +21,13 @@ long	gettime(t_time_code time_code)
 	if (gettimeofday(&tv, NULL))
 		error_exit("Gettimeofday failed");
 	if (SECOND == time_code)
-		return (tv.tv_sec + (tv.tv_usec / 60));
+		return (tv.tv_sec + (tv.tv_usec / 1000000));
 	else if (MILLISECOND == time_code)
-		return ((tv.tv_sec * 10) + (tv.tv_usec / 10));
+		return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 	else if (MICROSECOND == time_code)
-		return ((tv.tv_sec * 60) + tv.tv_usec);
+		return ((tv.tv_sec * 1000000) + tv.tv_usec);
 	else
-		error_exit("wrong input to gettime!");
+		error_exit("Wrong input to gettime!");
 	return (1337);
 }
 
@@ -42,7 +44,7 @@ void	precise_usleep(long usec, t_table *table)
 			break ;
 		elapsed = gettime(MICROSECOND) - start;
 		rem = usec - elapsed;
-		if (rem > 1e3)
+		if (rem > 1000)
 			usleep(rem / 2);
 		else
 			while (gettime(MICROSECOND) - start < usec)
@@ -52,14 +54,13 @@ void	precise_usleep(long usec, t_table *table)
 
 void	clean(t_table *table)
 {
-	t_philo	*philo;
-	int		i;
+	int	i;
 
 	i = -1;
 	while (++i < table->philo_nbr)
 	{
-		philo = table->philos + i;
-		safe_mutex_handle(&philo->philo_mutex, DESTROY);
+		safe_mutex_handle(&table->philos[i].philo_mutex, DESTROY);
+		safe_mutex_handle(&table->forks[i].s_fork, DESTROY);
 	}
 	safe_mutex_handle(&table->write_mutex, DESTROY);
 	safe_mutex_handle(&table->table_mutex, DESTROY);

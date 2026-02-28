@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 17:03:52 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:02:54 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,10 @@ void	wait_all_threads(t_table *table);
 bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
 void	increase_long(t_mtx *mutex, long *value);
 void	thinking(t_philo *philo, bool pre_simulation);
+void	de_synchronize_philos(t_philo *philo);
+
+// *** write ***
+void	write_status(t_philo_status status, t_philo *philo, bool debug);
 
 // *** parsing ***
 void	parse_input(t_table *table, char **av);

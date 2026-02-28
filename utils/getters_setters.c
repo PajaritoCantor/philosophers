@@ -6,17 +6,12 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:18:07 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 12:11:55 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:21:28 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-*
-* Module containing setters_getters
-* to avoid writing LOCK UNLOCK everywhere  
-*/
 void	set_bool(t_mtx *mutex, bool *dest, bool value)
 {
 	safe_mutex_handle(mutex, LOCK);

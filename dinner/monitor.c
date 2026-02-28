@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 21:43:12 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 14:01:21 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:00:44 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static bool	philo_died(t_philo *philo)
 		return (false);
 	elapsed = gettime(MILLISECOND) - get_long(&philo->philo_mutex,
 			&philo->last_meal_time);
-	t_to_die = philo->table->time_to_die / 1e3;
-	if (elapsed > t_to_die)
+	t_to_die = philo->table->time_to_die;
+	if (elapsed >= t_to_die)
 		return (true);
 	return (false);
 }
@@ -41,6 +41,7 @@ void	*monitor_dinner(void *data)
 	while (!all_threads_running(&table->table_mutex,
 			&table->threads_running_nbr, table->philo_nbr))
 		usleep(100);
+	precise_usleep(10, table);
 	while (!simulation_finished(table))
 	{
 		i = -1;
@@ -49,7 +50,7 @@ void	*monitor_dinner(void *data)
 			if (philo_died(table->philos + i))
 			{
 				set_bool(&table->table_mutex, &table->end_simulation, true);
-				write_status(DIED, table->philos + i, DEBUG_MODE);
+				write_status(DIED, table->philos + i, false);
 				break ;
 			}
 		}
