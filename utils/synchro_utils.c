@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:38:05 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 13:38:29 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 17:05:42 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,22 @@ void	increase_long(t_mtx *mutex, long *value)
 	safe_mutex_handle(mutex, LOCK);
 	(*value)++;
 	safe_mutex_handle(mutex, UNLOCK);
+}
+
+/*
+* Make de system FAIR
+*/
+
+void	de_synchronize_philos(t_philo *philo)
+{
+	if (philo->table->philo_nbr % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			precise_usleep(3e4, philo->table);
+	}
+	else
+	{
+		if (philo->id % 2)
+			thinking(philo, true);
+	}
 }
