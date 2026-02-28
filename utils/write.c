@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:35:55 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 20:32:08 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 21:06:47 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	write_status(t_philo_status status, t_philo *philo)
 	if (get_bool(&philo->philo_mutex, &philo->full))
 		return ;
 	safe_mutex_handle(&philo->table->write_mutex, LOCK);
-	if ((status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK 
+	if ((status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK
 			|| status == EATING || status == SLEEPING || status == THINKING)
 		&& !simulation_finished(philo->table))
 	{

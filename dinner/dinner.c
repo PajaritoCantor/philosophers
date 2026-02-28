@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:04:18 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 20:31:33 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 21:05:47 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ void	*dinner_simulation(void *data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
-	set_long(&philo->philo_mutex, &philo->last_meal_time, 
+	set_long(&philo->philo_mutex, &philo->last_meal_time,
 		philo->table->start_simulation);
-	increase_long(&philo->table->table_mutex, 
+	increase_long(&philo->table->table_mutex,
 		&philo->table->threads_running_nbr);
 	de_synchronize_philos(philo);
 	while (!simulation_finished(philo->table))
