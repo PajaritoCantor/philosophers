@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 12:04:39 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 21:48:21 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 22:02:35 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ long	gettime(t_time_code time_code)
 	return (1337);
 }
 
-void    precise_usleep(long usec, t_table *table)
+void	precise_usleep(long usec, t_table *table)
 {
-    long    start;
+	long	start;
 
-    start = gettime(MICROSECOND);
-    while (gettime(MICROSECOND) - start < usec)
-    {
-        if (simulation_finished(table))
-            break ;
-        usleep(500);
-    }
+	start = gettime(MICROSECOND);
+	while (gettime(MICROSECOND) - start < usec)
+	{
+		if (simulation_finished(table))
+			break ;
+		usleep(500);
+	}
 }
 
 void	clean(t_table *table)
