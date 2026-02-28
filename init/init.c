@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 11:39:52 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 12:11:43 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 13:08:32 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ static void	assign_forks(t_philo *philo, t_fork *forks, int position)
 	int	philo_nbr;
 
 	philo_nbr = philo->table->philo_nbr;
-	philo->first_fork = &forks([philo_position]);
+	philo->first_fork = &forks[position];
+	philo->second_fork = &forks[(position + 1) % philo_nbr];
 	if (philo->id % 2)
 	{
-		philo->first_fork = &forks[philo_position];
-		philo->second_fork = &forks[(philo_position + 1) & philo_nbr];
+		philo->first_fork = &forks[position];
+		philo->second_fork = &forks[(position + 1) & philo_nbr];
 	}
 }
 
@@ -38,6 +39,7 @@ static void	philo_init(t_table *table)
 		philo->full = false;
 		philo->meals_counter = 0;
 		philo->table = table;
+		philo->last_meal_time = gettime(MILLISECOND);
 		safe_mutex_handle(&philo->philo_mutex, INIT);
 		assign_forks(philo, table->forks, i);
 	}

@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 20:04:18 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 12:12:50 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 13:38:05 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	*dinner_simulation(void *data)
 		&philo->table->threads_running_nbr);
 	while (!simulation_finished(philo->table))
 	{
-		if (philo->full)
+		if (get_bool(&philo->philo_mutex, &philo->full))
 			break ;
 		eat(philo);
 		write_status(SLEEPING, philo, DEBUG_MODE);
@@ -78,21 +78,23 @@ void	dinner_start(t_table *table)
 	int	i;
 
 	i = -1;
-	if (0 == table->nbr_limit_meals)
+	if (table->nbr_limit_meals == 0)
 		return ;
-	else if (1 == table->philo_nbr)
-		safe_thread_handle(&table->philos[0].thread_id, lone_philo, &table->philos[0], CREATE);
+	if (table->philo_nbr == 1)
+		safe_thread_handle(&table->philos[0].thread_id,
+			lone_philo, &table->philos[0], CREATE);
 	else
 	{
 		while (++i < table->philo_nbr)
-			safe_thread_handle(&table->philos[i].thread_id, dinner_simulation
+			safe_thread_handle(&table->philos[i].thread_id, dinner_simulation,
 				&table->philos[i], CREATE);
 	}
-	safe_thread_handle(&table->monitor_dinner, table, table, CREATE);
+	safe_thread_handle(&table->monitor, (void *)monitor_dinner, table, CREATE);
 	table->start_simulation = gettime(MILLISECOND);
-	set_bool(&table->table, &table->all_threads_ready, true);
+	set_bool(&table->table_mutex, &table->all_threads_ready, true);
 	i = -1;
 	while (++i < table->philo_nbr)
-		safe_thread_handle(&table->philos[i].thread_id, NULL, NULL);
+		safe_thread_handle(&table->philos[i].thread_id, NULL, NULL, JOIN);
+	set_bool(&table->table_mutex, &table->end_simulation, true);
+	safe_thread_handle(&table->monitor, NULL, NULL, JOIN);
 }
-// if we manage to reach this line, all philos are FULL!

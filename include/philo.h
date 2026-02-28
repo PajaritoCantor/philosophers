@@ -6,7 +6,7 @@
 /*   By: jurodrig <jurodrig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 10:52:57 by jurodrig          #+#    #+#             */
-/*   Updated: 2026/02/28 12:16:32 by jurodrig         ###   ########.fr       */
+/*   Updated: 2026/02/28 13:28:40 by jurodrig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,42 +86,57 @@ typedef struct s_philo
 
 typedef struct s_table
 {
-	long	philo_nbr;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	nbr_limit_meals; // [5] | FLAG if -1
-	long	start_simulation;
-	bool	end_simulation; // a philo dies or all philos full
-	bool	all_threads_ready; // syncro philos
-	long	threads_running_nbr;
-	t_mtx	table_mutex; // avoid races while reading from table
-	t_mtx	write_mutex;
-	t_fork	*forks; // array forks
-	t_philo	*philos; // array philos
-}			t_table;
+	long		philo_nbr;
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
+	long		nbr_limit_meals; // [5] | FLAG if -1
+	long		start_simulation;
+	bool		end_simulation; // a philo dies or all philos full
+	bool		all_threads_ready; // syncro philos
+	long		threads_running_nbr;
+	pthread_t	monitor;
+	t_mtx		table_mutex; // avoid races while reading from table
+	t_mtx		write_mutex;
+	t_fork		*forks; // array forks
+	t_philo		*philos; // array philos
+}				t_table;
 
 // src
 
-// ** utils**
+// *** utils ***
 void	error_exit(const char *error);
 long	gettime(t_time_code time_code);
 void	precise_usleep(long usec, t_table *table);
+
+// *** synchro utils ***
+void	wait_all_threads(t_table *table);
+bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
+void	increase_long(t_mtx *mutex, long *value);
 
 // *** parsing ***
 void	parse_input(t_table *table, char **av);
 
 // *** safe functions ***
-void    *safe_malloc(size_t bytes);
-void    safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
-void    safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
-            void *data, t_opcode opcode);
+void	*safe_malloc(size_t bytes);
+void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+void	safe_thread_handle(pthread_t *thread, void *(*foo)(void *),
+			void	*data, t_opcode opcode);
 
-//*** setters and getters ***
-void    set_bool(t_mtx *mutex, bool *dest, bool value);
-bool    get_bool(t_mtx *mutex, bool *value);
-void    set_long(t_mtx *mutex, long *dest, long value); // Cambiado long *value a long value
-long    get_long(t_mtx *mutex, long *value);
-bool    simulation_finished(t_table *table);
+//*** getters and setters ***
+void	set_bool(t_mtx *mutex, bool *dest, bool value);
+bool	get_bool(t_mtx *mutex, bool *value);
+void	set_long(t_mtx *mutex, long *dest,
+			long value);
+long	get_long(t_mtx *mutex, long *value);
+bool	simulation_finished(t_table *table);
+
+//*** dinner ***
+void	dinner_start(t_table *table);
+void	*dinner_simulation(void *data);
+void	*monitor_dinner(void *data);
+
+//*** init ***
+void	data_init(t_table *table);
 
 #endif
